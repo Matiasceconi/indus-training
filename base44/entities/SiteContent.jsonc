@@ -1,0 +1,76 @@
+{
+  "name": "SiteContent",
+  "type": "object",
+  "properties": {
+    "logo": {
+      "type": "string",
+      "description": "URL del logo de INDUS TRAINING"
+    },
+    "heroTitle": {
+      "type": "string"
+    },
+    "heroSubtitle": {
+      "type": "string"
+    },
+    "heroLocation": {
+      "type": "string"
+    },
+    "heroImage": {
+      "type": "string",
+      "description": "URL de la imagen de portada"
+    },
+    "whatsappNumber": {
+      "type": "string",
+      "description": "N\u00famero de WhatsApp en formato internacional sin +"
+    },
+    "whatsappMessage": {
+      "type": "string",
+      "description": "Mensaje por defecto de WhatsApp"
+    },
+    "instagramUrl": {
+      "type": "string"
+    },
+    "instagramHandle": {
+      "type": "string"
+    },
+    "howWeWorkText": {
+      "type": "string"
+    },
+    "locationTitle": {
+      "type": "string"
+    },
+    "locationAddress": {
+      "type": "string"
+    },
+    "locationSchedule": {
+      "type": "string"
+    },
+    "locationModalities": {
+      "type": "string"
+    },
+    "contactTitle": {
+      "type": "string"
+    },
+    "contactText": {
+      "type": "string"
+    }
+  },
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
+import { useSiteContent } from "@/contexts/SiteContentContext";
 
-// Logo de INDUS TRAINING — componente de texto estilizado.
-// Para reemplazar por el logo real: cambiá el contenido por <img src="..." />
-// y guardá el archivo del logo en src/assets/indus-logo.svg o similar.
-export default function Logo({ className = "", variant = "dark" }) {
+// Logo de INDUS TRAINING. Si hay un logo cargado desde el panel admin,
+// muestra la imagen; si no, muestra el logo de texto como fallback.
+export default function Logo({ variant = "dark", className = "" }) {
+  const { site } = useSiteContent();
   const color = variant === "light" ? "text-white" : "text-[#121212]";
+
+  if (site?.logo) {
+    return (
+      <Link to="/" className={`inline-block ${className}`}>
+        <img
+          src={site.logo}
+          alt="INDUS TRAINING"
+          className={`h-9 sm:h-10 w-auto object-contain ${variant === "light" ? "brightness-0 invert" : ""}`}
+        />
+      </Link>
+    );
+  }
 
   return (
     <Link to="/" className={`inline-flex items-baseline gap-1.5 leading-none select-none ${className}`}>

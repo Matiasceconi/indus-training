@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useSiteContent } from "@/contexts/SiteContentContext";
 
 const STEPS = [
   {
@@ -28,6 +29,8 @@ const STEPS = [
 ];
 
 export default function HowWeWork() {
+  const { site } = useSiteContent();
+
   return (
     <section id="como-trabajamos" className="py-20 sm:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -83,9 +86,7 @@ export default function HowWeWork() {
         >
           <div className="border-l-4 border-[#FF6600] pl-6">
             <p className="text-lg sm:text-xl text-[#121212]/80 leading-relaxed font-medium">
-              En INDUS TRAINING no ofrecemos rutinas genéricas. Cada proceso
-              comienza entendiendo a la persona, sus objetivos y sus
-              posibilidades reales de entrenamiento.
+              {site?.howWeWorkText}
             </p>
           </div>
         </motion.div>

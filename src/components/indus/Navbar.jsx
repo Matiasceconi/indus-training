@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
-import { whatsappLink, WHATSAPP_MESSAGES } from "@/config/site";
+import { useSiteContent, whatsappLink } from "@/contexts/SiteContentContext";
 
 const NAV_LINKS = [
   { label: "Inicio", href: "#inicio" },
@@ -14,6 +14,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { site } = useSiteContent();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -42,7 +43,6 @@ export default function Navbar() {
             <Logo />
           </button>
 
-          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <button
@@ -57,7 +57,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <a
-              href={whatsappLink(WHATSAPP_MESSAGES.general)}
+              href={whatsappLink(site, site?.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#FF6600] text-white text-sm font-semibold rounded-full hover:bg-[#e65c00] active:scale-95 transition-all duration-200 shadow-sm"
@@ -75,7 +75,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {open && (
         <div className="lg:hidden bg-white border-t border-black/5">
           <nav className="px-5 py-4 flex flex-col gap-1">
@@ -89,7 +88,7 @@ export default function Navbar() {
               </button>
             ))}
             <a
-              href={whatsappLink(WHATSAPP_MESSAGES.general)}
+              href={whatsappLink(site, site?.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center justify-center px-5 py-3 bg-[#FF6600] text-white text-sm font-semibold rounded-full"

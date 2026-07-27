@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { MapPin, Clock, Layers, Navigation } from "lucide-react";
+import { useSiteContent } from "@/contexts/SiteContentContext";
 
 export default function Location() {
+  const { site } = useSiteContent();
+
   return (
     <section id="ubicacion" className="py-20 sm:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -19,14 +22,11 @@ export default function Location() {
             </span>
           </div>
           <h2 className="font-display font-black text-[#121212] text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05]">
-            Entrená con nosotros
-            <br />
-            <span className="text-[#FF6600]">en Puerto Madero.</span>
+            {site?.locationTitle || "Entrená con nosotros en Puerto Madero."}
           </h2>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-          {/* Info editable */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -42,8 +42,8 @@ export default function Location() {
                 <div className="text-xs font-bold tracking-wider text-[#121212]/40 uppercase mb-1">
                   Dirección / Zona
                 </div>
-                <p className="text-[#121212] font-medium">
-                  [Editable] Dirección o zona exacta en Puerto Madero, Buenos Aires.
+                <p className="text-[#121212] font-medium whitespace-pre-line">
+                  {site?.locationAddress}
                 </p>
               </div>
             </div>
@@ -56,8 +56,8 @@ export default function Location() {
                 <div className="text-xs font-bold tracking-wider text-[#121212]/40 uppercase mb-1">
                   Días y horarios
                 </div>
-                <p className="text-[#121212] font-medium">
-                  [Editable] Días y horarios de atención y entrenamiento.
+                <p className="text-[#121212] font-medium whitespace-pre-line">
+                  {site?.locationSchedule}
                 </p>
               </div>
             </div>
@@ -70,14 +70,13 @@ export default function Location() {
                 <div className="text-xs font-bold tracking-wider text-[#121212]/40 uppercase mb-1">
                   Modalidades disponibles
                 </div>
-                <p className="text-[#121212] font-medium">
-                  [Editable] Presencial, semi-presencial y/o a distancia.
+                <p className="text-[#121212] font-medium whitespace-pre-line">
+                  {site?.locationModalities}
                 </p>
               </div>
             </div>
           </motion.div>
 
-          {/* Mapa placeholder */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}

@@ -1,72 +1,7 @@
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
-import { whatsappLink, WHATSAPP_MESSAGES } from "@/config/site";
-
-const SERVICES = [
-  {
-    id: "personalizado",
-    number: "01",
-    title: "Entrenamientos Personalizados",
-    description:
-      "Sesiones adaptadas a tus objetivos, nivel y condición física. Entrená con planificación, supervisión profesional y seguimiento individual.",
-    features: [
-      "Fuerza y acondicionamiento físico",
-      "Mejora de la composición corporal",
-      "Movilidad y condición física general",
-      "Preparación física para deportes",
-      "Seguimiento de avances",
-    ],
-    price: "$35.000 ARS",
-    priceUnit: "por clase",
-    cta: "Reservar una clase",
-    message: WHATSAPP_MESSAGES.personalizado,
-    image:
-      "https://images.unsplash.com/photo-1534438327425-e44c8b1c0d4f?auto=format&fit=crop&w=800&q=80",
-    featured: true,
-  },
-  {
-    id: "futbol",
-    number: "02",
-    title: "Entrenamientos Grupales de Fútbol",
-    description:
-      "Entrenamientos en grupos reducidos para mejorar el rendimiento físico, técnico y deportivo de cada jugador.",
-    features: [
-      "Técnica individual",
-      "Coordinación y agilidad",
-      "Velocidad y potencia",
-      "Preparación física específica",
-      "Juegos y situaciones de fútbol",
-      "Grupos organizados por edad y nivel",
-    ],
-    price: null,
-    priceNote: "Consultá por edades, días, cupos y disponibilidad.",
-    cta: "Consultar por los grupos",
-    message: WHATSAPP_MESSAGES.futbol,
-    image:
-      "https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "planes",
-    number: "03",
-    title: "Planes de Entrenamiento con Seguimiento",
-    description:
-      "Recibí una planificación personalizada para entrenar de manera independiente, con acompañamiento y ajustes profesionales.",
-    features: [
-      "Entrevista inicial",
-      "Planificación personalizada",
-      "Videos explicativos",
-      "Control semanal",
-      "Ajustes según la evolución",
-      "Comunicación para consultas",
-    ],
-    price: "$30.000 ARS",
-    priceUnit: "por mes",
-    cta: "Comenzar mi planificación",
-    message: WHATSAPP_MESSAGES.planes,
-    image:
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac2934?auto=format&fit=crop&w=800&q=80",
-  },
-];
+import { Image } from "@/components/ui/image";
+import { useSiteContent, whatsappLink } from "@/contexts/SiteContentContext";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -78,6 +13,10 @@ const cardVariants = {
 };
 
 export default function Services() {
+  const { site, services } = useSiteContent();
+
+  if (!services || services.length === 0) return null;
+
   return (
     <section id="servicios" className="py-20 sm:py-28 bg-[#F5F5F5]">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -102,7 +41,7 @@ export default function Services() {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-          {SERVICES.map((service, i) => (
+          {services.map((service, i) => (
             <motion.article
               key={service.id}
               variants={cardVariants}
@@ -114,16 +53,24 @@ export default function Services() {
                 service.featured ? "border-[#FF6600]/30 shadow-xl shadow-[#FF6600]/5" : "border-black/5 shadow-sm"
               } hover:shadow-2xl hover:-translate-y-1 transition-all duration-300`}
             >
-              {/* Imagen superior */}
               <div className="relative aspect-[16/10] overflow-hidden bg-[#F5F5F5]">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover"
-                />
+                {service.image ? (
+                  <Image
+                    src={service.image}
+                    fittingType="fill"
+                    focalPointX={0.5}
+                    focalPointY={0.5}
+                    className="w-full h-full"
+                    alt={service.title}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-[#121212]/10 text-6xl font-display font-black">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                )}
                 <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
                   <span className="font-display font-black text-sm text-[#FF6600]">
-                    {service.number}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
                 {service.featured && (
@@ -141,36 +88,41 @@ export default function Services() {
                   {service.description}
                 </p>
 
-                <ul className="space-y-2.5 mb-6">
-                  {service.features.map((feat) => (
-                    <li key={feat} className="flex items-start gap-2.5 text-sm text-[#121212]/80">
-                      <Check size={16} className="text-[#FF6600] mt-0.5 shrink-0" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
+                {service.features && service.features.length > 0 && (
+                  <ul className="space-y-2.5 mb-6">
+                    {service.features.map((feat, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-sm text-[#121212]/80">
+                        <Check size={16} className="text-[#FF6600] mt-0.5 shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
-                {/* Precio destacado */}
                 <div className="mt-auto pt-5 border-t border-black/5">
                   {service.price ? (
                     <div className="mb-4">
                       <div className="font-display font-black text-3xl text-[#121212]">
                         {service.price}
                       </div>
-                      <div className="text-xs font-medium text-[#121212]/50 uppercase tracking-wide">
-                        {service.priceUnit}
-                      </div>
+                      {service.priceUnit && (
+                        <div className="text-xs font-medium text-[#121212]/50 uppercase tracking-wide">
+                          {service.priceUnit}
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <div className="mb-4">
-                      <div className="text-sm font-medium text-[#121212]/60 italic">
-                        {service.priceNote}
+                    service.priceNote && (
+                      <div className="mb-4">
+                        <div className="text-sm font-medium text-[#121212]/60 italic">
+                          {service.priceNote}
+                        </div>
                       </div>
-                    </div>
+                    )
                   )}
 
                   <a
-                    href={whatsappLink(service.message)}
+                    href={whatsappLink(site, service.whatsappMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 active:scale-[0.98] ${
@@ -179,7 +131,7 @@ export default function Services() {
                         : "bg-[#121212] text-white hover:bg-[#FF6600]"
                     }`}
                   >
-                    {service.cta}
+                    {service.cta || "Consultar"}
                     <ArrowRight size={16} />
                   </a>
                 </div>

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MapPin, ArrowRight } from "lucide-react";
-import { whatsappLink, WHATSAPP_MESSAGES } from "@/config/site";
+import { Image } from "@/components/ui/image";
+import { useSiteContent, whatsappLink } from "@/contexts/SiteContentContext";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -12,6 +13,8 @@ const fadeUp = {
 };
 
 export default function Hero() {
+  const { site } = useSiteContent();
+
   const scrollToServices = () => {
     const el = document.querySelector("#servicios");
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -21,7 +24,7 @@ export default function Hero() {
     <section id="inicio" className="relative pt-16 sm:pt-20 bg-white overflow-hidden">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-[calc(100vh-5rem)] py-12 lg:py-0">
-          {/* Texto — 5/12 columnas */}
+          {/* Texto — izquierda */}
           <div className="lg:col-span-5 order-2 lg:order-1">
             <motion.div
               variants={fadeUp}
@@ -32,7 +35,7 @@ export default function Hero() {
             >
               <MapPin size={14} className="text-[#FF6600]" />
               <span className="text-xs font-semibold tracking-wide text-[#FF6600] uppercase">
-                Puerto Madero, Buenos Aires
+                {site?.heroLocation || "Puerto Madero, Buenos Aires"}
               </span>
             </motion.div>
 
@@ -57,8 +60,7 @@ export default function Hero() {
               custom={2}
               className="mt-7 text-lg text-[#121212]/70 leading-relaxed max-w-md"
             >
-              Entrenamientos personalizados, fútbol y planes de entrenamiento con
-              seguimiento profesional.
+              {site?.heroSubtitle}
             </motion.p>
 
             <motion.div
@@ -69,7 +71,7 @@ export default function Hero() {
               className="mt-9 flex flex-col sm:flex-row gap-3"
             >
               <a
-                href={whatsappLink(WHATSAPP_MESSAGES.general)}
+                href={whatsappLink(site, site?.whatsappMessage)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#FF6600] text-white text-base font-semibold rounded-full hover:bg-[#e65c00] active:scale-[0.98] transition-all duration-200 shadow-lg shadow-[#FF6600]/20"
@@ -86,7 +88,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Imagen — 7/12 columnas */}
+          {/* Imagen — derecha */}
           <div className="lg:col-span-7 order-1 lg:order-2 relative">
             <motion.div
               initial={{ opacity: 0, scale: 1.05 }}
@@ -94,15 +96,22 @@ export default function Hero() {
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="relative aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5] xl:aspect-[5/6] rounded-3xl overflow-hidden bg-[#F5F5F5]"
             >
-              <img
-                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80"
-                alt="Atleta entrenando con intensidad"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+              {site?.heroImage ? (
+                <Image
+                  src={site.heroImage}
+                  fittingType="fill"
+                  focalPointX={0.5}
+                  focalPointY={0.5}
+                  className="w-full h-full"
+                  alt="Entrenamiento grupal en Puerto Madero"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-[#121212]/20">
+                  <MapPin size={48} />
+                </div>
+              )}
             </motion.div>
 
-            {/* Badge de autenticidad — estilo coordenada */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
