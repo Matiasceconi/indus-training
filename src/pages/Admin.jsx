@@ -6,8 +6,10 @@ import ServicesAdmin from "@/components/admin/ServicesAdmin";
 import ExperiencesAdmin from "@/components/admin/ExperiencesAdmin";
 import TeamAdmin from "@/components/admin/TeamAdmin";
 import AlumnosAdmin from "@/components/admin/AlumnosAdmin";
+import AgendaAdmin from "@/components/admin/AgendaAdmin";
 
 const TABS = [
+  { id: "agenda", label: "Agenda y clases" },
   { id: "alumnos", label: "Alumnos" },
   { id: "general", label: "General" },
   { id: "hero", label: "Portada" },
@@ -19,7 +21,7 @@ const TABS = [
 ];
 
 export default function Admin() {
-  const [tab, setTab] = useState("alumnos");
+  const [tab, setTab] = useState("agenda");
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
@@ -58,6 +60,7 @@ export default function Admin() {
           ))}
         </div>
 
+        {tab === "agenda" && <AgendaAdmin />}
         {tab === "alumnos" && <AlumnosAdmin />}
         {tab === "general" && <SiteContentEditor section="general" />}
         {tab === "hero" && <SiteContentEditor section="hero" />}

@@ -1,0 +1,101 @@
+{
+  "name": "Session",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "individual",
+        "grupal",
+        "seguimiento_online",
+        "otra"
+      ],
+      "description": "Tipo de clase"
+    },
+    "service": {
+      "type": "string",
+      "description": "Servicio relacionado"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de la clase (YYYY-MM-DD)"
+    },
+    "startTime": {
+      "type": "string",
+      "description": "Hora de inicio (HH:MM)"
+    },
+    "endTime": {
+      "type": "string",
+      "description": "Hora de finalizaci\u00f3n (HH:MM)"
+    },
+    "professor": {
+      "type": "string",
+      "description": "Profesor asignado"
+    },
+    "location": {
+      "type": "string",
+      "description": "Lugar de la clase"
+    },
+    "maxCapacity": {
+      "type": "number",
+      "description": "Cupo m\u00e1ximo para clases grupales",
+      "default": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "programada",
+        "pendiente_confirmacion",
+        "confirmada",
+        "completada",
+        "cancelada",
+        "reprogramada"
+      ],
+      "default": "programada",
+      "description": "Estado de la clase"
+    },
+    "internalNotes": {
+      "type": "string",
+      "description": "Observaciones internas (solo admin)"
+    },
+    "studentNotes": {
+      "type": "string",
+      "description": "Indicaciones visibles para el alumno"
+    },
+    "recurrenceId": {
+      "type": "string",
+      "description": "ID para agrupar clases recurrentes"
+    }
+  },
+  "required": [
+    "type",
+    "date",
+    "startTime",
+    "endTime",
+    "professor",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

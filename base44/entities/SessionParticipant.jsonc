@@ -1,0 +1,130 @@
+{
+  "name": "SessionParticipant",
+  "type": "object",
+  "properties": {
+    "sessionId": {
+      "type": "string",
+      "description": "ID de la sesi\u00f3n (Session)"
+    },
+    "clientProfileId": {
+      "type": "string",
+      "description": "ID del ClientProfile del alumno"
+    },
+    "studentUserId": {
+      "type": "string",
+      "description": "User ID del alumno (para RLS)"
+    },
+    "studentName": {
+      "type": "string",
+      "description": "Nombre del alumno (denormalizado)"
+    },
+    "classDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de la clase (denormalizada)"
+    },
+    "classStartTime": {
+      "type": "string",
+      "description": "Hora de inicio (denormalizada)"
+    },
+    "classEndTime": {
+      "type": "string",
+      "description": "Hora de finalizaci\u00f3n (denormalizada)"
+    },
+    "classType": {
+      "type": "string",
+      "enum": [
+        "individual",
+        "grupal",
+        "seguimiento_online",
+        "otra"
+      ],
+      "description": "Tipo de clase (denormalizado)"
+    },
+    "classService": {
+      "type": "string",
+      "description": "Servicio (denormalizado)"
+    },
+    "classProfessor": {
+      "type": "string",
+      "description": "Profesor (denormalizado)"
+    },
+    "classLocation": {
+      "type": "string",
+      "description": "Lugar (denormalizado)"
+    },
+    "classStatus": {
+      "type": "string",
+      "enum": [
+        "programada",
+        "pendiente_confirmacion",
+        "confirmada",
+        "completada",
+        "cancelada",
+        "reprogramada"
+      ],
+      "default": "programada",
+      "description": "Estado de la clase (denormalizado)"
+    },
+    "classStudentNotes": {
+      "type": "string",
+      "description": "Indicaciones visibles para el alumno (denormalizado)"
+    },
+    "attendanceStatus": {
+      "type": "string",
+      "enum": [
+        "pendiente",
+        "confirmado",
+        "presente",
+        "ausente",
+        "cancelacion_avisada"
+      ],
+      "default": "pendiente",
+      "description": "Estado de asistencia del alumno"
+    },
+    "professionalNote": {
+      "type": "string",
+      "description": "Observaci\u00f3n del profesional (solo admin puede editar)"
+    }
+  },
+  "required": [
+    "sessionId",
+    "clientProfileId",
+    "studentUserId",
+    "classDate",
+    "classStartTime",
+    "classEndTime",
+    "classType",
+    "classProfessor",
+    "classStatus"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.studentUserId": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
