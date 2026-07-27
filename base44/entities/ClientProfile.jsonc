@@ -1,0 +1,172 @@
+{
+  "name": "ClientProfile",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "description": "Nombre"
+    },
+    "lastName": {
+      "type": "string",
+      "description": "Apellido"
+    },
+    "birthDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de nacimiento"
+    },
+    "birthPlace": {
+      "type": "string",
+      "description": "Lugar de nacimiento"
+    },
+    "nationality": {
+      "type": "string",
+      "description": "Nacionalidad"
+    },
+    "phone": {
+      "type": "string",
+      "description": "N\u00famero de tel\u00e9fono"
+    },
+    "currentCity": {
+      "type": "string",
+      "description": "Ciudad o localidad actual"
+    },
+    "profilePhoto": {
+      "type": "string",
+      "description": "URL de la foto de perfil"
+    },
+    "serviceInterest": {
+      "type": "string",
+      "enum": [
+        "Entrenamiento personalizado",
+        "Entrenamiento grupal de f\u00fatbol",
+        "Plan de entrenamiento con seguimiento"
+      ],
+      "description": "Servicio de inter\u00e9s"
+    },
+    "mainGoal": {
+      "type": "string",
+      "description": "Objetivo principal"
+    },
+    "priorExperience": {
+      "type": "string",
+      "description": "Experiencia previa entrenando"
+    },
+    "observations": {
+      "type": "string",
+      "description": "Observaciones generales"
+    },
+    "guardian1Name": {
+      "type": "string",
+      "description": "Nombre y apellido del responsable 1"
+    },
+    "guardian1Relation": {
+      "type": "string",
+      "description": "Relaci\u00f3n del responsable 1 con el alumno"
+    },
+    "guardian1Phone": {
+      "type": "string",
+      "description": "Tel\u00e9fono del responsable 1"
+    },
+    "guardian1Email": {
+      "type": "string",
+      "description": "Correo del responsable 1"
+    },
+    "guardian2Name": {
+      "type": "string",
+      "description": "Nombre y apellido del responsable 2 (opcional)"
+    },
+    "guardian2Relation": {
+      "type": "string",
+      "description": "Relaci\u00f3n del responsable 2 con el alumno"
+    },
+    "guardian2Phone": {
+      "type": "string",
+      "description": "Tel\u00e9fono del responsable 2"
+    },
+    "guardian2Email": {
+      "type": "string",
+      "description": "Correo del responsable 2"
+    },
+    "emergencyContactName": {
+      "type": "string",
+      "description": "Nombre del contacto de emergencia (mayores)"
+    },
+    "emergencyContactRelation": {
+      "type": "string",
+      "description": "Relaci\u00f3n del contacto de emergencia"
+    },
+    "emergencyContactPhone": {
+      "type": "string",
+      "description": "Tel\u00e9fono del contacto de emergencia"
+    },
+    "acceptedTerms": {
+      "type": "boolean",
+      "description": "Aceptaci\u00f3n de t\u00e9rminos y condiciones"
+    },
+    "acceptedPrivacy": {
+      "type": "boolean",
+      "description": "Aceptaci\u00f3n de pol\u00edtica de privacidad"
+    },
+    "confirmedInfoAccuracy": {
+      "type": "boolean",
+      "description": "Confirmaci\u00f3n de que la informaci\u00f3n es correcta"
+    },
+    "guardianAuthorization": {
+      "type": "boolean",
+      "description": "Declaraci\u00f3n de responsable autorizado del menor"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendiente",
+        "activo",
+        "inactivo",
+        "rechazado"
+      ],
+      "default": "pendiente",
+      "description": "Estado del alumno"
+    }
+  },
+  "required": [
+    "firstName",
+    "lastName",
+    "birthDate",
+    "phone",
+    "serviceInterest"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

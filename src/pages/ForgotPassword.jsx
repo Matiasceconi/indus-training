@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Mail, ArrowLeft, Loader2 } from "lucide-react";
-import AuthLayout from "@/components/AuthLayout";
+import { Mail, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
+import IndusAuthLayout from "@/components/auth/IndusAuthLayout";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -18,7 +15,7 @@ export default function ForgotPassword() {
     try {
       await base44.auth.resetPasswordRequest(email);
     } catch {
-      // Always show success regardless
+      // Siempre mostrar éxito, la API no revela si el email existe
     } finally {
       setLoading(false);
       setSent(true);
@@ -26,51 +23,55 @@ export default function ForgotPassword() {
   };
 
   return (
-    <AuthLayout
-      icon={Mail}
-      title="Reset password"
-      subtitle="We'll send you a link to reset it"
+    <IndusAuthLayout
+      title="Recuperar contraseña"
+      subtitle="Te enviaremos un enlace para restablecerla"
       footer={
-        <Link to="/login" className="text-primary font-medium hover:underline">
-          <ArrowLeft className="w-3 h-3 inline mr-1" />Back to log in
+        <Link to="/login" className="text-[#FF6600] font-medium hover:underline inline-flex items-center gap-1">
+          <ArrowLeft className="w-3 h-3" /> Volver a iniciar sesión
         </Link>
       }
     >
       {sent ? (
-        <p className="text-sm text-foreground text-center">
-          If an account exists with that email, you'll receive a password reset link shortly.
-        </p>
+        <div className="p-5 rounded-xl bg-green-50 border border-green-100 flex items-start gap-3">
+          <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+          <p className="text-sm text-green-800">
+            Si existe una cuenta con ese correo, recibirás un enlace para restablecer tu contraseña en breve.
+          </p>
+        </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email address</Label>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-[#121212]">Correo electrónico</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-              <Input
-                id="email"
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#121212]/30" />
+              <input
                 type="email"
                 autoComplete="email"
                 autoFocus
-                placeholder="you@example.com"
+                placeholder="tu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 h-12"
+                className="w-full h-12 pl-10 pr-4 rounded-xl border border-black/10 bg-[#F5F5F5] text-[#121212] placeholder:text-[#121212]/30 focus:outline-none focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600]/10 transition-all"
                 required
               />
             </div>
           </div>
-          <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full h-12 inline-flex items-center justify-center gap-2 bg-[#FF6600] text-white font-semibold rounded-xl hover:bg-[#e65c00] active:scale-[0.98] transition-all disabled:opacity-60"
+          >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Sending...
+                <Loader2 className="w-4 h-4 animate-spin" /> Enviando...
               </>
             ) : (
-              "Send reset link"
+              "Enviar enlace de recuperación"
             )}
-          </Button>
+          </button>
         </form>
       )}
-    </AuthLayout>
+    </IndusAuthLayout>
   );
 }

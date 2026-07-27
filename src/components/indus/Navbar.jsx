@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import { useSiteContent, whatsappLink } from "@/contexts/SiteContentContext";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/lib/AuthContext";
 
 const NAV_LINKS = [
   { label: "Inicio", href: "#inicio" },
@@ -16,6 +18,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { site } = useSiteContent();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -57,6 +60,15 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
+            {isAuthenticated ? (
+              <Link to="/mi-espacio" className="hidden sm:inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-[#121212]/80 hover:text-[#FF6600] transition-colors">
+                Mi espacio
+              </Link>
+            ) : (
+              <Link to="/login" className="hidden sm:inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-[#121212]/80 hover:text-[#FF6600] transition-colors">
+                Iniciar sesión
+              </Link>
+            )}
             <a
               href={whatsappLink(site, site?.whatsappMessage)}
               target="_blank"
@@ -88,6 +100,15 @@ export default function Navbar() {
                 {link.label}
               </button>
             ))}
+            {isAuthenticated ? (
+              <Link to="/mi-espacio" className="mt-3 inline-flex items-center justify-center px-5 py-3 border border-black/10 text-[#121212] text-sm font-semibold rounded-full">
+                Mi espacio
+              </Link>
+            ) : (
+              <Link to="/login" className="mt-3 inline-flex items-center justify-center px-5 py-3 border border-black/10 text-[#121212] text-sm font-semibold rounded-full">
+                Iniciar sesión
+              </Link>
+            )}
             <a
               href={whatsappLink(site, site?.whatsappMessage)}
               target="_blank"

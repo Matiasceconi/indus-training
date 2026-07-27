@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
-import AuthLayout from "@/components/AuthLayout";
-import GoogleIcon from "@/components/GoogleIcon";
+import { Mail, Lock, Loader2, ArrowRight } from "lucide-react";
+import IndusAuthLayout from "@/components/auth/IndusAuthLayout";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,107 +15,97 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnTo = urlParams.get("returnTo");
       await base44.auth.loginViaEmailPassword(email, password);
-      window.location.href = "/";
+      if (returnTo) {
+        window.location.href = returnTo;
+      } else {
+        try {
+          const user = await base44.auth.me();
+          window.location.href = user?.role === "admin" ? "/admin" : "/mi-espacio";
+        } catch {
+          window.location.href = "/mi-espacio";
+        }
+      }
     } catch (err) {
-      setError(err.message || "Invalid email or password");
+      setError(err.message || "Correo o contraseña incorrectos");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogle = () => {
-    base44.auth.loginWithProvider("google", "/");
-  };
-
   return (
-    <AuthLayout
-      icon={LogIn}
-      title="Welcome back"
-      subtitle="Log in to your account"
+    <IndusAuthLayout
+      title="Iniciar sesión"
+      subtitle="Ingresá a tu espacio INDUS TRAINING"
       footer={
         <>
-          Don't have an account?{" "}
-          <Link to="/register" className="text-primary font-medium hover:underline">
-            Create one
+          ¿Todavía no tenés cuenta?{" "}
+          <Link to="/register" className="text-[#FF6600] font-semibold hover:underline">
+            Registrate
           </Link>
         </>
       }
     >
-      <Button
-        variant="outline"
-        className="w-full h-12 text-sm font-medium mb-6"
-        onClick={handleGoogle}
-      >
-        <GoogleIcon className="w-5 h-5 mr-2" />
-        Continue with Google
-      </Button>
-
-      <div className="relative mb-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-3 text-muted-foreground">or</span>
-        </div>
-      </div>
-
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+        <div className="mb-5 p-3 rounded-lg bg-red-50 text-red-600 text-sm border border-red-100">
           {error}
         </div>
       )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-1.5">
+          <label className="block text-sm font-medium text-[#121212]">Correo electrónico</label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="email"
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#121212]/30" />
+            <input
               type="email"
               autoComplete="email"
               autoFocus
-              placeholder="you@example.com"
+              placeholder="tu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 h-12"
+              className="w-full h-12 pl-10 pr-4 rounded-xl border border-black/10 bg-[#F5F5F5] text-[#121212] placeholder:text-[#121212]/30 focus:outline-none focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600]/10 transition-all"
               required
             />
           </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link to="/forgot-password" className="text-xs text-primary hover:underline">
-              Forgot password?
+            <label className="block text-sm font-medium text-[#121212]">Contraseña</label>
+            <Link to="/forgot-password" className="text-xs text-[#FF6600] font-medium hover:underline">
+              Olvidé mi contraseña
             </Link>
           </div>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="password"
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#121212]/30" />
+            <input
               type="password"
               autoComplete="current-password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 h-12"
+              className="w-full h-12 pl-10 pr-4 rounded-xl border border-black/10 bg-[#F5F5F5] text-[#121212] placeholder:text-[#121212]/30 focus:outline-none focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600]/10 transition-all"
               required
             />
           </div>
         </div>
-        <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full h-12 inline-flex items-center justify-center gap-2 bg-[#FF6600] text-white font-semibold rounded-xl hover:bg-[#e65c00] active:scale-[0.98] transition-all disabled:opacity-60"
+        >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Logging in...
+              <Loader2 className="w-4 h-4 animate-spin" /> Ingresando...
             </>
           ) : (
-            "Log in"
+            <>
+              Ingresar <ArrowRight size={18} />
+            </>
           )}
-        </Button>
+        </button>
       </form>
-    </AuthLayout>
+    </IndusAuthLayout>
   );
 }

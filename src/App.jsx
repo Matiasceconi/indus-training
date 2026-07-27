@@ -12,6 +12,7 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
+import MiEspacio from '@/pages/MiEspacio';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/" element={<Home />} />
             <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+              <Route path="/mi-espacio" element={<MiEspacio />} />
               <Route path="/admin" element={<Admin />} />
             </Route>
             <Route path="*" element={<PageNotFound />} />

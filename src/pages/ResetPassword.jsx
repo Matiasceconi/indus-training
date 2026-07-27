@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Lock, Loader2, AlertTriangle } from "lucide-react";
-import AuthLayout from "@/components/AuthLayout";
+import { Lock, Loader2, AlertTriangle, ArrowLeft } from "lucide-react";
+import IndusAuthLayout from "@/components/auth/IndusAuthLayout";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -20,7 +17,11 @@ export default function ResetPassword() {
     e.preventDefault();
     setError("");
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+    if (newPassword.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
       return;
     }
     setLoading(true);
@@ -28,7 +29,7 @@ export default function ResetPassword() {
       await base44.auth.resetPassword({ resetToken, newPassword });
       window.location.href = "/login";
     } catch (err) {
-      setError(err.message || "Failed to reset password");
+      setError(err.message || "No se pudo restablecer la contraseña");
     } finally {
       setLoading(false);
     }
@@ -36,79 +37,86 @@ export default function ResetPassword() {
 
   if (!resetToken) {
     return (
-      <AuthLayout
-        icon={AlertTriangle}
-        title="Invalid reset link"
-        subtitle="This password reset link is missing or invalid"
+      <IndusAuthLayout
+        title="Enlace inválido"
+        subtitle="El enlace de recuperación no es válido o está incompleto"
         footer={
-          <Link to="/forgot-password" className="text-primary font-medium hover:underline">
-            Request a new link
+          <Link to="/forgot-password" className="text-[#FF6600] font-medium hover:underline">
+            Solicitar un nuevo enlace
           </Link>
         }
       >
-        <p className="text-sm text-foreground text-center">
-          The link you used appears to be incomplete. Please request a new password reset email.
-        </p>
-      </AuthLayout>
+        <div className="p-5 rounded-xl bg-amber-50 border border-amber-100 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <p className="text-sm text-amber-800">
+            El enlace que usaste parece estar incompleto. Por favor, solicitá un nuevo correo de recuperación.
+          </p>
+        </div>
+      </IndusAuthLayout>
     );
   }
 
   return (
-    <AuthLayout
-      icon={Lock}
-      title="New password"
-      subtitle="Enter your new password below"
+    <IndusAuthLayout
+      title="Nueva contraseña"
+      subtitle="Ingresá tu nueva contraseña"
+      footer={
+        <Link to="/login" className="text-[#FF6600] font-medium hover:underline inline-flex items-center gap-1">
+          <ArrowLeft className="w-3 h-3" /> Volver a iniciar sesión
+        </Link>
+      }
     >
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+        <div className="mb-5 p-3 rounded-lg bg-red-50 text-red-600 text-sm border border-red-100">
           {error}
         </div>
       )}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="password">New Password</Label>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-1.5">
+          <label className="block text-sm font-medium text-[#121212]">Nueva contraseña</label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="password"
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#121212]/30" />
+            <input
               type="password"
               autoComplete="new-password"
               autoFocus
               placeholder="••••••••"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="pl-10 h-12"
+              className="w-full h-12 pl-10 pr-4 rounded-xl border border-black/10 bg-[#F5F5F5] text-[#121212] placeholder:text-[#121212]/30 focus:outline-none focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600]/10 transition-all"
               required
             />
           </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirm">Confirm Password</Label>
+        <div className="space-y-1.5">
+          <label className="block text-sm font-medium text-[#121212]">Confirmar contraseña</label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="confirm"
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#121212]/30" />
+            <input
               type="password"
               autoComplete="new-password"
               placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="pl-10 h-12"
+              className="w-full h-12 pl-10 pr-4 rounded-xl border border-black/10 bg-[#F5F5F5] text-[#121212] placeholder:text-[#121212]/30 focus:outline-none focus:border-[#FF6600] focus:ring-2 focus:ring-[#FF6600]/10 transition-all"
               required
             />
           </div>
         </div>
-        <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full h-12 inline-flex items-center justify-center gap-2 bg-[#FF6600] text-white font-semibold rounded-xl hover:bg-[#e65c00] active:scale-[0.98] transition-all disabled:opacity-60"
+        >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Resetting...
+              <Loader2 className="w-4 h-4 animate-spin" /> Restableciendo...
             </>
           ) : (
-            "Reset password"
+            "Restablecer contraseña"
           )}
-        </Button>
+        </button>
       </form>
-    </AuthLayout>
+    </IndusAuthLayout>
   );
 }
