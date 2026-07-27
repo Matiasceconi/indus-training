@@ -86,7 +86,7 @@ export default function Location() {
           >
             <iframe
               title="Mapa Puerto Madero"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-58.373%2C-34.625%2C-58.353%2C-34.605&layer=mapnik&marker=-34.615%2C-58.363"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-58.366%2C-34.618%2C-58.358%2C-34.611&layer=mapnik&marker=-34.6145%2C-58.3625"
               className="w-full h-full min-h-[320px] absolute inset-0"
               style={{ border: 0 }}
               loading="lazy"
