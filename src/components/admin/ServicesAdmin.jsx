@@ -64,6 +64,7 @@ export default function ServicesAdmin() {
         cta: service.cta,
         whatsappMessage: service.whatsappMessage,
         image: service.image,
+        video: service.video,
         order: service.order,
         featured: service.featured,
       });
@@ -87,6 +88,7 @@ export default function ServicesAdmin() {
         cta: "Consultar",
         whatsappMessage: "Hola INDUS TRAINING, quiero más información.",
         image: "",
+        video: "",
         order: services?.length || 0,
         featured: false,
       });
@@ -132,6 +134,8 @@ export default function ServicesAdmin() {
             onChange={(v) => update(service.id, "image", v)}
             aspect="aspect-[16/10]"
           />
+
+          <Field label="URL del video (opcional, reemplaza la imagen)" value={service.video} onChange={(v) => update(service.id, "video", v)} placeholder="https://..." />
 
           <Field label="Título" value={service.title} onChange={(v) => update(service.id, "title", v)} />
           <TextArea label="Descripción" value={service.description} onChange={(v) => update(service.id, "description", v)} />

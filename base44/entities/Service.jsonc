@@ -37,6 +37,10 @@
     "image": {
       "type": "string"
     },
+    "video": {
+      "type": "string",
+      "description": "URL del video promocional. Si existe, reemplaza la imagen en la tarjeta."
+    },
     "order": {
       "type": "number",
       "default": 0

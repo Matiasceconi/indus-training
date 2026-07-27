@@ -54,7 +54,16 @@ export default function Services() {
               } hover:shadow-2xl hover:-translate-y-1 transition-all duration-300`}
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-[#F5F5F5]">
-                {service.image ? (
+                {service.video ? (
+                  <video
+                    src={service.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : service.image ? (
                   <Image
                     src={service.image}
                     fittingType="fill"
