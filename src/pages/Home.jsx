@@ -3,6 +3,7 @@ import Navbar from "@/components/indus/Navbar";
 import Hero from "@/components/indus/Hero";
 import Services from "@/components/indus/Services";
 import HowWeWork from "@/components/indus/HowWeWork";
+import Experiences from "@/components/indus/Experiences";
 import Team from "@/components/indus/Team";
 import Location from "@/components/indus/Location";
 import ContactBlock from "@/components/indus/ContactBlock";
@@ -17,6 +18,7 @@ export default function Home() {
           <Hero />
           <Services />
           <HowWeWork />
+          <Experiences />
           <Team />
           <Location />
           <ContactBlock />

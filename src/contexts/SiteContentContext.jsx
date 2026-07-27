@@ -25,21 +25,23 @@ const DEFAULT_SITE = {
 };
 
 export function SiteContentProvider({ children }) {
-  const [data, setData] = useState({ site: DEFAULT_SITE, services: [], team: [] });
+  const [data, setData] = useState({ site: DEFAULT_SITE, services: [], team: [], experiences: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAll() {
       try {
-        const [siteContent, services, team] = await Promise.all([
+        const [siteContent, services, team, experiences] = await Promise.all([
           base44.entities.SiteContent.list(),
           base44.entities.Service.list("order", 50),
           base44.entities.TeamMember.list("order", 50),
+          base44.entities.Experience.list("order", 50),
         ]);
         setData({
           site: { ...DEFAULT_SITE, ...(siteContent[0] || {}) },
           services: services || [],
           team: team || [],
+          experiences: experiences || [],
         });
       } catch (e) {
         console.error("Error al cargar el contenido del sitio:", e);

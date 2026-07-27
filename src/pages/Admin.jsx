@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 import SiteContentEditor from "@/components/admin/SiteContentEditor";
 import ServicesAdmin from "@/components/admin/ServicesAdmin";
+import ExperiencesAdmin from "@/components/admin/ExperiencesAdmin";
 import TeamAdmin from "@/components/admin/TeamAdmin";
 
 const TABS = [
   { id: "general", label: "General" },
   { id: "hero", label: "Portada" },
   { id: "services", label: "Servicios" },
+  { id: "experiences", label: "Experiencias" },
   { id: "team", label: "Equipo" },
   { id: "location", label: "Ubicación" },
   { id: "contact", label: "Contacto" },
@@ -57,6 +59,7 @@ export default function Admin() {
         {tab === "general" && <SiteContentEditor section="general" />}
         {tab === "hero" && <SiteContentEditor section="hero" />}
         {tab === "services" && <ServicesAdmin />}
+        {tab === "experiences" && <ExperiencesAdmin />}
         {tab === "team" && <TeamAdmin />}
         {tab === "location" && <SiteContentEditor section="location" />}
         {tab === "contact" && <SiteContentEditor section="contact" />}
