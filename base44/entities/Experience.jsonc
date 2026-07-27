@@ -1,0 +1,66 @@
+{
+  "name": "Experience",
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": "Nombre o primer nombre"
+    },
+    "trainingType": {
+      "type": "string",
+      "enum": [
+        "Entrenamiento personalizado",
+        "Entrenamiento grupal de f\u00fatbol",
+        "Plan de entrenamiento con seguimiento"
+      ]
+    },
+    "testimonial": {
+      "type": "string",
+      "description": "Testimonio breve"
+    },
+    "goal": {
+      "type": "string",
+      "description": "Objetivo trabajado"
+    },
+    "result": {
+      "type": "string",
+      "description": "Resultado obtenido, \u00fanicamente cuando se proporcione informaci\u00f3n real"
+    },
+    "focalPointX": {
+      "type": "number",
+      "default": 0.5
+    },
+    "focalPointY": {
+      "type": "number",
+      "default": 0.5
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "image"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
